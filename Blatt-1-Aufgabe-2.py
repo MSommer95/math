@@ -11,7 +11,7 @@ def read_txt():
 
 
 word_list = read_txt()
-own_word_list = []
+all_words_list = []
 pin_list = []
 found_pins = []
 
@@ -31,7 +31,7 @@ def calculate_pin(array_1, array_2, array_3, array_4):
                     own_word += (array_1[i] + array_2[x] + array_3[y] + array_4[z])
                     pin += str(i) + str(x) + str(y) + str(z)
                     pin_list.append(pin)
-                    own_word_list.append(own_word)
+                    all_words_list.append(own_word)
                     own_word = ''
                     pin = ''
 
@@ -49,7 +49,7 @@ def compare(array_1, array_2):
 
 calculate_pin(column_1, column_2, column_3, column_4)
 
-print('Es wurden: ' + str(compare(word_list, own_word_list)) + ' Übereinstimmungen gefunden.')
+print('Es wurden: ' + str(compare(word_list, all_words_list)) + ' Übereinstimmungen gefunden.')
 
 
 def guess_pin(pin, array_1):
@@ -63,20 +63,44 @@ def guess_pin(pin, array_1):
 
 counter_wins, counter_lose = 0, 0
 iterations = 100000
+rounds_list = []
+win_list = []
+avg_number = 0
 
 for a in range(iterations):
+    counter_round = 0
+    win_current = 0
     new_array = found_pins.copy()
     for b in range(3):
+
         if guess_pin('4112', new_array):
             counter_wins += 1
+            win_list.append(1)
+            win_current += 1
+            counter_round += 1
             break
         else:
             counter_lose += 1
+            counter_round += 1
+
+
+    rounds_list.append(counter_round)
+    if win_current == 0:
+        win_list.append(0)
+
+for p in range(len(rounds_list)):
+    if win_list[p] == 1:
+        avg_number += rounds_list[p]
+
 
 print('Loses: ' + str(counter_lose))
 print('Wins: ' + str(counter_wins))
 
-print('Wahrscheinlichkeitsversuch: ' + str(counter_wins) + ':10000 = ' + str(counter_wins / iterations))
+print('Wahrscheinlichkeitsversuch: ' + str(counter_wins) + ':' + str(iterations) + ' = ' + str(counter_wins / iterations))
 
 print('Die Wahrscheinlichkeit, dass ein Angreifer den PIN richtig errät liegt nach 3 Versuchen bei ca. ' +
       str(counter_wins / iterations * 100) + '%')
+
+print(avg_number)
+avg_number = avg_number/counter_wins
+print('Anzahl der im Avg. gebrauchten Versuche, bei den Fällen, wo ein PIN erraten wurden : '+ str(avg_number))

