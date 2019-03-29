@@ -1,5 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 import random
+import time
 
 
 def read_txt():
@@ -48,8 +49,10 @@ def compare(array_1, array_2):
 
 
 calculate_pin(column_1, column_2, column_3, column_4)
-
+start_time = time.time()
 print('Es wurden: ' + str(compare(word_list, all_words_list)) + ' Übereinstimmungen gefunden.')
+elapsed_time = time.time() - start_time
+print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
 
 
 def guess_pin(pin, array_1):

