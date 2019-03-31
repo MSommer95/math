@@ -1,14 +1,13 @@
 
 import itertools
 import requests
-import concurrent.futures
+from multiprocessing.dummy import Pool as ThreadPool
 import time
-from datetime import datetime
-
-#pool = ThreadPool(pool_size)
 
 pool_size = int(input('Pool-Größe: '))
+pool = ThreadPool(pool_size)
 user_input = input('Nutzername: ')
+
 combination_array = []
 combined = []
 test_key_counter = []
@@ -30,10 +29,12 @@ f.close()
 def create_ingredients():
     password_ingredients = ''
 
-    for j in range(ord('A'), ord('Z')+1):
-        password_ingredients += chr(j)
     for i in range(ord('a'), ord('z')+1):
         password_ingredients += chr(i)
+
+    for j in range(ord('A'), ord('Z')+1):
+        password_ingredients += chr(j)
+
     for x in range(10):
         password_ingredients += str(x)
     return password_ingredients
@@ -76,7 +77,7 @@ def execute_hack(x):
             print('Getestete Keys: ' + str(len(test_key_counter)))
             d = open('combinations.txt', 'a')
             d.write(user_input + '\t \t \t' + str(round(elapsed_time)) + "\t \t \t \t \t"
-                    + str(round(len(test_key_counter)/elapsed_time)) + "\t \t \t \t \t \t" + str(pool_size)+"\n")
+                    + str(round(len(test_key_counter) / elapsed_time)) + "\t \t \t \t \t \t" + str(pool_size) + "\n")
 
 
 if user_input != 'joe':
@@ -90,9 +91,6 @@ if user_input == 'joe':
 else:
     range_iteration = range(len(combination_array))
 
-
 start_time = time.time()
-dt_object = datetime.fromtimestamp(time.time())
-print(dt_object)
-with concurrent.futures.ThreadPoolExecutor(max_workers=pool_size) as pool:
-    results_for_1 = pool.map(execute_hack, range_iteration)
+
+results_for = pool.map(execute_hack, range_iteration)
