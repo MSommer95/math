@@ -1,6 +1,4 @@
-
-from numba import vectorize
-import numpy as np
+from tensorflow import keras
 import hashlib
 import itertools
 import time
@@ -24,30 +22,31 @@ def create_ingredients():
 
 
 def create_password():
+    global test_key_counter
+
     for item in itertools.product(ingredients, repeat=password_length):
-        hash_generated_passwords(''.join(item))
+        test_key_counter += 1
+        if hashlib.sha1(''.join(item).encode()).hexdigest() == current_hash:
+            elapsed_time = time.time() - start_time
+            print('Password for ' + user_input + ': ' + ''.join(item))
+            print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
+            print('Getestete Keys pro Sekunde: ' + str(test_key_counter / elapsed_time))
+            print('Getestete Keys: ' + str(test_key_counter))
+            break
 
 
 def hash_generated_passwords(x):
-    global test_key_counter
-
-    test_key_counter += 1
-    if hashlib.sha1(x.encode()).hexdigest() in hashes:
-        elapsed_time = time.time() - start_time
-        print('Password for ' + user_input + ': ' + x)
-        print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
-        print('Getestete Keys pro Sekunde: ' + str(test_key_counter / elapsed_time))
-        print('Getestete Keys: ' + str(test_key_counter))
+    return
 
 
 if __name__ == '__main__':
-    pool = ThreadPool()
+    #pool = ThreadPool()
     user_input = input('Nutzername: ')
     test_key_counter = 0
     combinations_number = 0
-    names = []
     hashes = []
     passwords = []
+    current_hash = ''
 
     f = open('adobe-top100.txt', 'r')
     for line in f:
@@ -61,7 +60,6 @@ if __name__ == '__main__':
     for line in f:
         line = line.strip()
         columns = line.split()
-        names.append(columns[0])
         hashes.append(columns[1])
 
     f.close()
@@ -76,6 +74,7 @@ if __name__ == '__main__':
         start_time = time.time()
         dt_object = datetime.fromtimestamp(time.time())
         print(dt_object)
+        current_hash = hashes[password_length-1]
         create_password()
 
     if user_input == 'joe':
