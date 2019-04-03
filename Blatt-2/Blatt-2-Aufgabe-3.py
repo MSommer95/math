@@ -1,9 +1,9 @@
-from tensorflow import keras
+import os
 import hashlib
 import itertools
 import time
 from datetime import datetime
-from multiprocessing.dummy import Pool as ThreadPool
+from multiprocessing import Process, current_process
 
 
 def create_ingredients():
@@ -21,22 +21,28 @@ def create_ingredients():
     return password_ingredients
 
 
-def create_password():
-    global test_key_counter
-
-    for item in itertools.product(ingredients, repeat=password_length):
-        test_key_counter += 1
+def create_password(input_value, ingredients, password_length, combinations_number, current_hash, start_time, user_input, process_count):
+    print(f"Process ID: {current_process().name}")
+    for counter, item in enumerate(itertools.islice(itertools.product(ingredients, repeat=password_length),
+                                                    int(combinations_number * input_value/process_count),
+                                                    int(combinations_number * (input_value+1)/process_count))):
         if hashlib.sha1(''.join(item).encode()).hexdigest() == current_hash:
             elapsed_time = time.time() - start_time
             print('Password for ' + user_input + ': ' + ''.join(item))
             print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
-            print('Getestete Keys pro Sekunde: ' + str(test_key_counter / elapsed_time))
-            print('Getestete Keys: ' + str(test_key_counter))
+            print('Getestete Keys pro Sekunde: ' + str(counter / elapsed_time))
+            print('Getestete Keys: ' + str(counter))
             break
 
 
-def hash_generated_passwords(x):
-    return
+def hash_generated_passwords_joe(input_array):
+
+    for counter, item in enumerate(input_array):
+        if hashlib.sha1(item.encode()).hexdigest() == current_hash:
+            elapsed_time = time.time() - start_time
+            print('Password for ' + user_input + ': ' + ''.join(item))
+            print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
+            print('Getestete Keys: ' + str(counter))
 
 
 if __name__ == '__main__':
@@ -64,18 +70,38 @@ if __name__ == '__main__':
 
     f.close()
 
-    ingredients = create_ingredients()
+
 
     if user_input != 'joe':
         password_length = int(input('Wie lang soll das Passwort sein? '))
-        combinations_number = 62 ** password_length
+        ingredients = create_ingredients()
         print('Ingredients: ' + ingredients)
+        combinations_number = 62 ** password_length
         print('Kominationsmöglichkeiten: ' + str(combinations_number))
-        start_time = time.time()
         dt_object = datetime.fromtimestamp(time.time())
         print(dt_object)
         current_hash = hashes[password_length-1]
-        create_password()
+        start_time = time.time()
+        process_count = 8
+        processes = []
+        for input_value in range(process_count):
+            process = Process(target=create_password, args=(input_value, ingredients, password_length,
+                                                            combinations_number, current_hash, start_time,
+                                                            user_input, process_count))
+            processes.append(process)
+            process.start()
+
+        for process in processes:
+            process.join()
+
+        elapsed_time = time.time() - start_time
+        print('Gebrauchte Zeit für einen kompletten Durchlauf: ' + str(elapsed_time))
 
     if user_input == 'joe':
-        range_iteration = range(len(passwords))
+        combinations_number = 100
+        print('Passwörter: ' + str(combinations_number))
+        dt_object = datetime.fromtimestamp(time.time())
+        print(dt_object)
+        current_hash = hashes[0]
+        start_time = time.time()
+        hash_generated_passwords_joe(passwords)
