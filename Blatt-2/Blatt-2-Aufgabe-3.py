@@ -1,4 +1,4 @@
-import os
+
 import hashlib
 import itertools
 import time
@@ -21,73 +21,63 @@ def create_ingredients():
     return password_ingredients
 
 
-def create_password(input_value, ingredients, password_length, combinations_number, current_hash, start_time, user_input, process_count):
+def create_password(input_value, ingredients, password_length, combinations_number, current_hash, user_input, process_count, start_time):
     print(f"Process ID: {current_process().name}")
-    for counter, item in enumerate(itertools.islice(itertools.product(ingredients, repeat=password_length),
+    for item in itertools.islice(itertools.product(ingredients, repeat=password_length),
                                                     int(combinations_number * input_value/process_count),
-                                                    int(combinations_number * (input_value+1)/process_count))):
+                                                    int(combinations_number * (input_value+1)/process_count)):
+
         if hashlib.sha1(''.join(item).encode()).hexdigest() == current_hash:
-            elapsed_time = time.time() - start_time
+            print(time.time() - start_time)
             print('Password for ' + user_input + ': ' + ''.join(item))
-            print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
-            print('Getestete Keys pro Sekunde: ' + str(counter / elapsed_time))
-            print('Getestete Keys: ' + str(counter))
-            break
 
 
 def hash_generated_passwords_joe(input_array):
 
     for counter, item in enumerate(input_array):
         if hashlib.sha1(item.encode()).hexdigest() == current_hash:
-            elapsed_time = time.time() - start_time
-            print('Password for ' + user_input + ': ' + ''.join(item))
-            print('Gebrauchte Zeit zum Knacken: ' + str(elapsed_time))
-            print('Getestete Keys: ' + str(counter))
+            print('Password for ' + current_user + ': ' + ''.join(item))
 
 
 if __name__ == '__main__':
-    #pool = ThreadPool()
-    user_input = input('Nutzername: ')
-    test_key_counter = 0
-    combinations_number = 0
     hashes = []
+    users = []
     passwords = []
-    current_hash = ''
+    password_length = int(input('Wie lang soll das Passwort sein? '))
 
     f = open('adobe-top100.txt', 'r')
     for line in f:
         line = line.strip()
         columns = line.split()
         passwords.append(columns[3])
-
     f.close()
 
-    f = open('hashed_passwords', 'r')
+    f = open('hashed_passwords.txt', 'r')
     for line in f:
         line = line.strip()
         columns = line.split()
         hashes.append(columns[1])
-
+        users.append(columns[0])
     f.close()
 
+    current_hash = hashes[password_length - 1]
+    current_user = users[password_length - 1]
 
-
-    if user_input != 'joe':
-        password_length = int(input('Wie lang soll das Passwort sein? '))
+    if current_user != 'joe':
+        processes = []
+        process_count = 6
         ingredients = create_ingredients()
-        print('Ingredients: ' + ingredients)
         combinations_number = 62 ** password_length
+
         print('Kominationsmöglichkeiten: ' + str(combinations_number))
         dt_object = datetime.fromtimestamp(time.time())
         print(dt_object)
-        current_hash = hashes[password_length-1]
         start_time = time.time()
-        process_count = 8
-        processes = []
+
         for input_value in range(process_count):
             process = Process(target=create_password, args=(input_value, ingredients, password_length,
-                                                            combinations_number, current_hash, start_time,
-                                                            user_input, process_count))
+                                                            combinations_number, current_hash,
+                                                            current_user, process_count, start_time))
             processes.append(process)
             process.start()
 
@@ -96,8 +86,9 @@ if __name__ == '__main__':
 
         elapsed_time = time.time() - start_time
         print('Gebrauchte Zeit für einen kompletten Durchlauf: ' + str(elapsed_time))
+        print('Verglichene Keys auf allen Prozessen: ' + str(combinations_number/elapsed_time))
 
-    if user_input == 'joe':
+    else:
         combinations_number = 100
         print('Passwörter: ' + str(combinations_number))
         dt_object = datetime.fromtimestamp(time.time())
