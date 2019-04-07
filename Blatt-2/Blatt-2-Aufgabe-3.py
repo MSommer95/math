@@ -65,7 +65,7 @@ if __name__ == '__main__':
 
     if current_user != 'joe':
         processes = []
-        process_count = 6
+        process_count = 8
         ingredients = create_ingredients()
         combinations_number = 62 ** password_length
 
