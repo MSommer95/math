@@ -1,0 +1,15 @@
+Aufgabe 1:
+-   Transaktionen der kürzeren Kette, werden wieder in den Pool der abzuarbeitenden Transaktionen geführt.
+-   Bei einem 51% Angriff hat ein User oder ein Kollektiv mehr als 50% der Rechenkapazität des Netzwerks und
+    können somit die Blockchain Berechnung immens beeinflussen(Transaktionen sperren, Blöcke schneller als andere adden...)
+-   Ein 51% Angriff ist in der Vergangenheit schon öfter vorgekommen, grade bei kleineren Bitcoin-Varianten.
+
+Aufgabe 2:
+-   Bitcoin nutzt den Sha-256 Algorithmus
+-   Selbst Arbeitsbeweis erbringen:
+    44.809.650 TH\s * 10min. = 26.885.790.000.000.000.000.000
+    26885790000000000000000/1700000 = 15815170588235294,117647058823529
+    15815170588235294,117647058823529 / 3600 = 4393102941176,4705882352941176469 std.
+    4393102941176,4705882352941176469 / 24 = 183045955882,35294117647058823529 Tage
+    183045955882,35294117647058823529 / 365 = 501495769,54069298952457695406929 Jahre
+-   Bitcoin-Mining: -2,34$ pro Tag
