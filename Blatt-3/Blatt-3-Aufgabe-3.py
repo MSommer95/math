@@ -15,10 +15,10 @@ def create_password(input_value, combinations_number, current_hash, process_coun
 
 
 if __name__ == '__main__':
-    current_hash = '0000000039dfc1dc945675e760ae3cdce020df305ceac046ab025667398725f5'
+    current_hash = '000000000e6cc4699001de147eb80dfabf597758119ab203aadaabf5598523c4'
     processes = []
     process_count = 7
-    combinations_number = 2**76
+    combinations_number = 2**102
     print('Kominationsmöglichkeiten: ' + str(combinations_number))
     dt_object = datetime.fromtimestamp(time.time())
     print(dt_object)
