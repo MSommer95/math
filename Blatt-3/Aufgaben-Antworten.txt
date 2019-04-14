@@ -6,7 +6,7 @@ Aufgabe 1:
 
 Aufgabe 2:
 -   Bitcoin nutzt den Sha-256 Algorithmus
--
+-   1,35e-21
 -   Selbst Arbeitsbeweis erbringen:
     44.809.650 TH\s * 10min. = 26.885.790.000.000.000.000.000
     26885790000000000000000/1700000 = 15815170588235294,117647058823529
