@@ -1,6 +1,5 @@
-
 import textwrap
-from collections import Counter
+
 
 def encrypt_vigenere_chiffre(input_key, input_text, i):
     cipher = ''
@@ -45,6 +44,7 @@ def analyze_cipher(input_text, split):
 
     print(letter_list)
 
+
 def decrypt_vigenere_chiffre(input_text, key):
     clear = ''
     i = 0
@@ -61,13 +61,13 @@ def decrypt_vigenere_chiffre(input_text, key):
 
 
 def kappa_test(input_text, split, best_guess):
+
     sorted_parts = []
     durch_sum_med = 0
 
     for fill in range(split):
         sorted_parts.append('')
     parts = textwrap.wrap(input_text, split)
-    #print(parts)
     for i in range(len(parts)):
         for j in range(split):
             if j < len(parts[i]):
@@ -133,7 +133,6 @@ if __name__ == '__main__':
     print(krypto_text)
     print(len(krypto_text))
 
-    test_crypto = 'XOQWIJGBIXRVKT'.lower()
     test_key = 'igloskbso'
     print(decrypt_vigenere_chiffre(krypto_text, test_key))
 
@@ -145,12 +144,4 @@ if __name__ == '__main__':
     friedman(koinzidenzindex(krypto_text), krypto_text)
 
     analyze_cipher(krypto_text, best_guess)
-
-
-
-    #
-    #input_key = list(input("Geben sie einen Key ein: ").lower())
-    #input_text = list(input("Geben sie einen Satz ein: ").lower())
-    #
-    #print(encrypt_vigenere_chiffre(input_key, input_text, i))
 
