@@ -1,8 +1,10 @@
 import textwrap
+import operator
 
 
-def encrypt_vigenere_chiffre(input_key, input_text, i):
+def encrypt_vigenere_chiffre(input_key, input_text):
     cipher = ''
+    i = 0
     while i < len(input_text):
         for k in range(len(input_key)):
             key_index = ord(input_key[k]) - 97
@@ -16,7 +18,7 @@ def encrypt_vigenere_chiffre(input_key, input_text, i):
 
 
 def analyze_cipher(input_text, split):
-
+    key = ''
     sorted_parts = []
     letter_list = {}
 
@@ -36,13 +38,26 @@ def analyze_cipher(input_text, split):
 
     print(sorted_parts)
 
-    for index in range(len(sorted_parts[8])):
-        letter_list[sorted_parts[8][index]] += 1
+    for i in range(len(sorted_parts)):
 
-    for letter in letter_list:
-        print(letter, (letter_list[letter] / len(sorted_parts[8]))*100)
+        value_e = ord('e')-97
 
-    print(letter_list)
+        for index in range(len(sorted_parts[i])):
+            letter_list[sorted_parts[i][index]] += 1
+
+        #for letter in letter_list:
+        #    print(letter, (letter_list[letter] / len(sorted_parts[8])) * 100)
+
+        max_value = max(letter_list.items(), key=operator.itemgetter(1))[0]
+
+        max_value = ord(max_value)-97
+
+        key = key + chr((max_value - value_e) % 26 + 97)
+
+        for i in range(26):
+            letter_list[chr(i + 97)] = 0
+
+    return key
 
 
 def decrypt_vigenere_chiffre(input_text, key):
@@ -80,7 +95,7 @@ def kappa_test(input_text, split, best_guess):
 
     durch_sum_med = durch_sum_med / len(sorted_parts)
     print('Koinzidenzindex für Split: ' + str(split) + ' :' + str(durch_sum_med))
-    if 0.060 < durch_sum_med < 0.070:
+    if 0.064 < durch_sum_med < 0.072:
         print('Found guess: ' + str(durch_sum_med))
         best_guess = split
         return best_guess
@@ -107,19 +122,17 @@ def koinzidenzindex(teil_alphabet):
     return sum_med
 
 
-def friedman(koinzi, krypto_text):
-    k = (0.0295 * len(krypto_text)) / (((len(krypto_text) - 1) * koinzi) - (0.0385 * len(krypto_text)) + 0.068)
-    print(k)
+def friedman(koinzi, input_text):
+    k = (0.0295 * len(input_text)) / (((len(input_text) - 1) * koinzi) - (0.0385 * len(input_text)) + 0.068)
+    print('Friedmann: ' + str(k))
 
 
 if __name__ == '__main__':
     cipher = ''
     krypto_text = ''
-    key = ''
     whitelist = ''
     best_guess = 0
-    i = 0
-    l = 1
+
     f = open('geheimtext.txt', 'r')
 
     for line in f:
@@ -133,9 +146,6 @@ if __name__ == '__main__':
     print(krypto_text)
     print(len(krypto_text))
 
-    test_key = 'igloskbso'
-    print(decrypt_vigenere_chiffre(krypto_text, test_key))
-
     for x in range(1, 30):
         best_guess = kappa_test(krypto_text, x, best_guess)
         if best_guess > 0:
@@ -143,5 +153,26 @@ if __name__ == '__main__':
     print(best_guess)
     friedman(koinzidenzindex(krypto_text), krypto_text)
 
-    analyze_cipher(krypto_text, best_guess)
+    key = analyze_cipher(krypto_text, best_guess)
+    print('Der Schlüssel: ' + key)
 
+    decrypted_text = decrypt_vigenere_chiffre(krypto_text, key)
+
+    print(decrypted_text)
+
+    test_cipher = encrypt_vigenere_chiffre('cardinal', decrypted_text)
+
+    best_guess = 0
+
+    for x in range(1, 30):
+        best_guess = kappa_test(test_cipher, x, best_guess)
+        if best_guess > 0:
+            break
+    print(best_guess)
+    friedman(koinzidenzindex(test_cipher), test_cipher)
+    key = analyze_cipher(test_cipher, best_guess)
+    print('Der Schlüssel: ' + key)
+
+    decrypted_text = decrypt_vigenere_chiffre(test_cipher, key)
+
+    print(decrypted_text)
