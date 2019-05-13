@@ -17,12 +17,12 @@ def encrypt_vigenere_chiffre(input_key, input_text):
     return cipher
 
 
-def decrypt_vigenere_chiffre(input_text, key):
+def decrypt_vigenere_chiffre(input_text, input_key):
     clear = ''
     i = 0
     while i < len(input_text):
-        for k in range(len(key)):
-            key_index = ord(key[k]) - 97
+        for k in range(len(input_key)):
+            key_index = ord(input_key[k]) - 97
             text_index = ord(input_text[i]) - 97
             clear = clear + chr((text_index - key_index) % 26 + 97)
             i = i + 1
@@ -73,7 +73,7 @@ def analyze_cipher(input_text, split):
     return key
 
 
-def kappa_test(input_text, split, best_guess):
+def kappa_test(input_text, split):
 
     sorted_parts = []
     durch_sum_med = 0
@@ -145,7 +145,7 @@ if __name__ == '__main__':
     print(len(krypto_text))
 
     for x in range(1, 30):
-        best_guess = kappa_test(krypto_text, x, best_guess)
+        best_guess = kappa_test(krypto_text, x)
         if best_guess > 0:
             break
     print(best_guess)
