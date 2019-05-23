@@ -1,0 +1,87 @@
+Yubico AES OTP funktioniert nur in Komination mit einem Yubikey
+HOTP gibt einen 6-8 digit Code aus
+
+AES kann nicht desync
+HOTP kann desync
+
+HOTP ist gut dokumentiert
+AES ist nur mit Yubikey implementiert
+
+
+Warum anderes Hex Mapping?
+- to achieve a keyboard layout independent encoding.
+
+OTP:            fddeffijlujlvlgvficcdbitgjrfjkkg
+OTP-Hex:        42234478ae8afa5f4700217d58c48995
+
+Secret-Key:     01 43 6f 54 ac f9 43 60 f1 8f 5b 13 7b c3 f9 96
+Secret-Key:     01436f54acf94360f18f5b137bc3f996
+
+Decrypted:      62 6C 27 F4 73 E1 CD D6 71 4F 5F BB 9B AA 37 E1
+
+
+Vorgegebener OTP:
+Private ID:     62 6C 27 F4 73 E1   (99273480915996)
+Use Counter:    CD D6               (6593)
+Timestamp Low:  71 4F               (28252)
+Timestamp High: 5F                  (209)
+SessionCounter: BB                  (233)
+Random:         9B AA               (38922)
+CRC:            37 E1               (26150)
+
+
+OTP:            vdccdklntgbrthgrdevhnlvkrhjkldtb
+OTP-Hex:        f20029abd51cd65c23f6baf9c689a2d1
+
+Secret-Key:     0e 63 52 2b 2f cf 63 b4 6b 47 d4 8d 97 9b 08 d4
+Secret-Key:     0e63522b2fcf63b46b47d48d979b08d4
+
+Decrypted:      02 96 0F 21 02 C9 01 00 04 DE 3C 00 CD B1 0A A8
+
+
+Self OTP 1:
+Private ID:     02 96 0F 21 02 C9
+Use Counter:    01 00
+Timestamp Low:  04 DE
+Timestamp High: 3C
+SessionCounter: 00
+Random:         CD B1
+CRC:            0A A8
+
+
+OTP:            nurekldnidvbrgbchdngehkjcvfeirck
+OTP-Hex:        bec39a2b72f1c51062b536980f437c09
+
+Secret-Key:     0e 63 52 2b 2f cf 63 b4 6b 47 d4 8d 97 9b 08 d4
+Secret-Key:     0e63522b2fcf63b46b47d48d979b08d4
+
+Decrypted:      02 96 0F 21 02 C9 01 00 15 DE 3C 01 9B 24 4E F0
+
+
+Self OTP 1:
+Private ID:     02 96 0F 21 02 C9
+Use Counter:    01 00
+Timestamp Low:  15 DE
+Timestamp High: 3C
+SessionCounter: 01
+Random:         9B 24
+CRC:            4E F0
+
+
+OTP:            ifetelhljgejlrrjggnijdgukkevitkc
+OTP-Hex:        743d3a6a8538acc855b7825e993f7d90
+
+Secret-Key:     0e 63 52 2b 2f cf 63 b4 6b 47 d4 8d 97 9b 08 d4
+Secret-Key:     0e63522b2fcf63b46b47d48d979b08d4
+
+Decrypted:      02 96 0F 21 02 C9 02 00 3F 2F 0A 00 36 BF 7B 2A
+
+
+Self OTP 1:
+Private ID:     02 96 0F 21 02 C9
+Use Counter:    02 00
+Timestamp Low:  3F 2F
+Timestamp High: 0A
+SessionCounter: 00
+Random:         36 BF
+CRC:            7B 2A

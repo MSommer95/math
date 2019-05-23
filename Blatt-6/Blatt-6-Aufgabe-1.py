@@ -29,6 +29,8 @@ def analyze_cipher(input_text, split):
         sorted_parts.append('')
     parts = textwrap.wrap(input_text, split)
 
+    print(len(parts))
+
     for i in range(len(parts)):
         for j in range(split):
             if j < len(parts[i]):
@@ -75,7 +77,7 @@ def decrypt_vigenere_chiffre(input_text, key):
     return clear
 
 
-def kappa_test(input_text, split, best_guess):
+def kappa_test(input_text, split):
 
     sorted_parts = []
     durch_sum_med = 0
@@ -147,7 +149,7 @@ if __name__ == '__main__':
     print(len(krypto_text))
 
     for x in range(1, 30):
-        best_guess = kappa_test(krypto_text, x, best_guess)
+        best_guess = kappa_test(krypto_text, x)
         if best_guess > 0:
             break
     print(best_guess)
@@ -160,15 +162,16 @@ if __name__ == '__main__':
 
     print(decrypted_text)
 
-    test_cipher = encrypt_vigenere_chiffre('cardinal', decrypted_text)
+    test_cipher = encrypt_vigenere_chiffre('cardinals', decrypted_text)
 
     best_guess = 0
 
     for x in range(1, 30):
-        best_guess = kappa_test(test_cipher, x, best_guess)
+        best_guess = kappa_test(test_cipher, x)
         if best_guess > 0:
             break
     print(best_guess)
+    print(koinzidenzindex(test_cipher))
     friedman(koinzidenzindex(test_cipher), test_cipher)
     key = analyze_cipher(test_cipher, best_guess)
     print('Der Schlüssel: ' + key)
