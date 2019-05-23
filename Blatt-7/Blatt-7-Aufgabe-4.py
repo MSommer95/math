@@ -1,5 +1,4 @@
 
-
 hex = "0123456789abcdef"
 modhex = "cbdefghijklnrtuv"
 

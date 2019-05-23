@@ -29,6 +29,7 @@ SessionCounter: BB                  (233)
 Random:         9B AA               (38922)
 CRC:            37 E1               (26150)
 
+-----------------------------------------------------------------------------
 
 OTP:            vdccdklntgbrthgrdevhnlvkrhjkldtb
 OTP-Hex:        f20029abd51cd65c23f6baf9c689a2d1
@@ -48,6 +49,7 @@ SessionCounter: 00
 Random:         CD B1
 CRC:            0A A8
 
+-----------------------------------------------------------------------------
 
 OTP:            nurekldnidvbrgbchdngehkjcvfeirck
 OTP-Hex:        bec39a2b72f1c51062b536980f437c09
@@ -67,6 +69,7 @@ SessionCounter: 01
 Random:         9B 24
 CRC:            4E F0
 
+-----------------------------------------------------------------------------
 
 OTP:            ifetelhljgejlrrjggnijdgukkevitkc
 OTP-Hex:        743d3a6a8538acc855b7825e993f7d90
