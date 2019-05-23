@@ -17,6 +17,21 @@ def encrypt_vigenere_chiffre(input_key, input_text):
     return cipher
 
 
+def decrypt_vigenere_chiffre(input_text, input_key):
+    clear = ''
+    i = 0
+    while i < len(input_text):
+        for k in range(len(input_key)):
+            key_index = ord(input_key[k]) - 97
+            text_index = ord(input_text[i]) - 97
+            clear = clear + chr((text_index - key_index) % 26 + 97)
+            i = i + 1
+
+            if i >= len(input_text):
+                break
+    return clear
+
+
 def analyze_cipher(input_text, split):
     key = ''
     sorted_parts = []
@@ -29,16 +44,12 @@ def analyze_cipher(input_text, split):
         sorted_parts.append('')
     parts = textwrap.wrap(input_text, split)
 
-    print(len(parts))
-
     for i in range(len(parts)):
         for j in range(split):
             if j < len(parts[i]):
                 sorted_parts[j] = sorted_parts[j] + parts[i][j]
             else:
                 break
-
-    print(sorted_parts)
 
     for i in range(len(sorted_parts)):
 
@@ -60,21 +71,6 @@ def analyze_cipher(input_text, split):
             letter_list[chr(i + 97)] = 0
 
     return key
-
-
-def decrypt_vigenere_chiffre(input_text, key):
-    clear = ''
-    i = 0
-    while i < len(input_text):
-        for k in range(len(key)):
-            key_index = ord(key[k]) - 97
-            text_index = ord(input_text[i]) - 97
-            clear = clear + chr((text_index - key_index) % 26 + 97)
-            i = i + 1
-
-            if i >= len(input_text):
-                break
-    return clear
 
 
 def kappa_test(input_text, split):
@@ -162,20 +158,4 @@ if __name__ == '__main__':
 
     print(decrypted_text)
 
-    test_cipher = encrypt_vigenere_chiffre('cardinals', decrypted_text)
-
-    best_guess = 0
-
-    for x in range(1, 30):
-        best_guess = kappa_test(test_cipher, x)
-        if best_guess > 0:
-            break
-    print(best_guess)
-    print(koinzidenzindex(test_cipher))
-    friedman(koinzidenzindex(test_cipher), test_cipher)
-    key = analyze_cipher(test_cipher, best_guess)
-    print('Der Schlüssel: ' + key)
-
-    decrypted_text = decrypt_vigenere_chiffre(test_cipher, key)
-
-    print(decrypted_text)
+    test_cipher = encrypt_vigenere_chiffre('cardinal', decrypted_text)
