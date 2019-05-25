@@ -1,3 +1,42 @@
+Aufgabe 1:
+a)
+Abwechselnde Nullen und Einsen: 0x0101010101010101
+Abwechselnde F und E: 0xFEFEFEFEFEFEFEFE
+0xE0E0E0E0F1F1F1F1
+0x1F1F1F1F0E0E0E0E
+
+b)
+4 / 2**56
+
+Aufgabe 2:
+2**56
+
+Aufgabe 3:
+2**55 (Chosen Plaintext)
+
+Aufgabe 5:
+a)
+660.999.158.743.081.708.359,31353424974 std
+27.541.631.614.295.071.181,638063927073 tage
+75.456.524.970.671.427,894898805279651 jahre
+
+b)
+128bit:
+Nach 96.0 beträgt die Zeit in Tagen: 1.4930348415007082
+Nach 97.5 beträgt die Zeit in Tagen: 0.7465174207503541
+
+c)
+196bit:
+Nach 192.0 beträgt die Zeit in Tagen: 1.4930348415007082
+Nach 193.5 beträgt die Zeit in Tagen: 0.7465174207503541
+
+256bit:
+Nach 288.0 beträgt die Zeit in Tagen: 1.4930348415007082
+Nach 289.5 beträgt die Zeit in Tagen: 0.7465174207503541
+
+
+
+Aufgabe 6:
 Yubico AES OTP funktioniert nur in Komination mit einem Yubikey
 HOTP gibt einen 6-8 digit Code aus
 
@@ -21,13 +60,13 @@ Decrypted:      62 6C 27 F4 73 E1 CD D6 71 4F 5F BB 9B AA 37 E1
 
 
 Vorgegebener OTP:
-Private ID:     62 6C 27 F4 73 E1   (99273480915996)
-Use Counter:    CD D6               (6593)
-Timestamp Low:  71 4F               (28252)
-Timestamp High: 5F                  (209)
-SessionCounter: BB                  (233)
-Random:         9B AA               (38922)
-CRC:            37 E1               (26150)
+Private ID:     62 6C 27 F4 73 E1
+Use Counter:    CD D6
+Timestamp Low:  71 4F
+Timestamp High: 5F
+SessionCounter: BB
+Random:         9B AA
+CRC:            37 E1
 
 -----------------------------------------------------------------------------
 
