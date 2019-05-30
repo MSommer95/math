@@ -1,7 +1,6 @@
 
-b = 34512423561108014234
-a = 115792089210356248762697446949407573530086143415290314195533631308867097853951
-
+a = 34512423561108014234
+b = 115792089210356248762697446949407573530086143415290314195533631308867097853951
 
 werteR = []
 werteQ = []
@@ -41,7 +40,7 @@ def erwEuklid(werteQ, werteR, i, x, y):
     return erwEuklid(werteQ, werteR, i-1, y, ergebnis)
 
 
-erwEuklid(werteQ, werteR, len(werteQ)-2, 0, 1)
+erwEuklid(werteQ, werteR, len(werteR)-2, 0, 1)
 
 print(ergebnisse)
 
@@ -49,9 +48,16 @@ print('Der ggt(' + str(a) + ',' + str(b) + ') ist: ' + str(ggt(a, b)) + '=' + st
       + str(a) + '+' + str(ergebnisse[len(ergebnisse)-1]) + '*' + str(b))
 
 ergebnis = ergebnisse[len(ergebnisse)-2]
-zwischenErgebnis = ((a * b) % a)
+zwischenErgebnis = a * ergebnis % b
+
+if (a * ergebnis % b) != 1:
+    ergebnis = ergebnisse[len(ergebnisse) - 1]
 
 if ergebnis < 0:
     ergebnis = (ergebnisse[len(ergebnisse)-2] + (a * b)) % a
 
+
+
 print('Inverse: ' + str(b) + '^-1 = ' + str(ergebnis) + ' mod ' + str(a))
+
+
