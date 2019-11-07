@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 def check_for_equal(P, a, b, p):
 
@@ -21,7 +24,6 @@ def check_for_not_null(a, b):
 
 
 def point_addition(P, Q, p):
-
     number1 = (P[1] - Q[1]) % p
     number2 = (mulinv((P[0] - Q[0]) % p, p)) % p
 
@@ -106,10 +108,21 @@ if __name__ == '__main__':
 
     #d)
     print('Berechnen Sie die Addition der Punkte (7, 9) und (0, 2).')
-    P = (7, 9)
+    P = (9, 1)
     Q = (0, 2)
     print(point_addition(P, Q, p))
     print(check_for_equal((11, 4), a, b, p))
+
+    point_holder = []
+
+    for x in range(100000):
+        P = point_multiply(P, a, p)
+        point_holder.append(P)
+
+    x, y = zip(*point_holder)
+
+    plt.scatter(x, y)
+    plt.show()
 
 
 
