@@ -1,3 +1,9 @@
+import secrets
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
 def check_for_equal(P, a, b, p):
 
     compare_y = pow(P[1], 2) % p
@@ -114,6 +120,15 @@ if __name__ == '__main__':
 
     print('---------------------------------------------------')
 
+    point_holder = []
 
+    for x in range(100):
+        P = point_multiply(P, a, p)
+        point_holder.append(P)
+
+    x, y = zip(*point_holder)
+
+    plt.scatter(x, y)
+    plt.show()
 
 
