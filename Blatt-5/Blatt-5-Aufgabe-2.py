@@ -25,4 +25,3 @@ if __name__ == '__main__':
             continue
         elif user_input == 'n':
             break
-

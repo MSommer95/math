@@ -127,3 +127,30 @@ Timestamp High: 0A
 SessionCounter: 00
 Random:         36 BF
 CRC:            7B 2A
+
+795278764cdbf8228a5015d6c7705294
+
+-----------------------------------------------------------------------------
+
+OTP:            ikgdijihfrtnvjddjlgcbgthriicgdkf
+OTP-Hex:        795278764cdbf8228a5015d6c7705294
+
+Secret-Key:     0e 63 52 2b 2f cf 63 b4 6b 47 d4 8d 97 9b 08 d4
+Secret-Key:     0e63522b2fcf63b46b47d48d979b08d4
+
+Decrypted:      02 96 0F 21 02 C9 03 00 04 28 09 00 8A 89 5B 93
+
+
+Self OTP 1:
+Private ID:     02 96 0F 21 02 C9
+Use Counter:    03 00
+Timestamp Low:  04 28
+Timestamp High: 09
+SessionCounter: 00
+Random:         8A 89
+CRC:            5B 93
+
+1 / 2**128
+
+CBC = Cipher3 = Fk(Cipher2 XOR m3)
+Entschlüsseln = m4 = Fk-^(c4) XOR c3

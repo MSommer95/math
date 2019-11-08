@@ -2,7 +2,7 @@
 hex = "0123456789abcdef"
 modhex = "cbdefghijklnrtuv"
 
-OTP = "ifetelhljgejlrrjggnijdgukkevitkc"
+OTP = "ikgdijihfrtnvjddjlgcbgthriicgdkf"
 translated = ""
 
 for x in range(len(OTP)):

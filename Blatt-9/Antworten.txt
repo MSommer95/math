@@ -1,0 +1,15 @@
+1)
+a) Fingerprint sorgt für authetifizierung, da einmalig
+b) Web of Trust: Ein Netzwerk von Beglaubigungen, die sich gegenseitig beglaubigen: Kaskade der Glaubhaftigkeit
+
+2)
+a) 49
+b) 133
+
+4)
+a) 37 ist korrekt
+
+S,SM,SM,S,S,SM,S,S,SM,SM,SM,S,SM
+
+
+1011010011101

@@ -158,4 +158,21 @@ if __name__ == '__main__':
 
     print(decrypted_text)
 
-    test_cipher = encrypt_vigenere_chiffre('cardinal', decrypted_text)
+    test_cipher = encrypt_vigenere_chiffre('igloskbso', decrypted_text)
+
+    best_guess = 0
+
+    for x in range(1, 30):
+        best_guess = kappa_test(test_cipher, x)
+        if best_guess > 0:
+            break
+
+    print(best_guess)
+    friedman(koinzidenzindex(test_cipher), test_cipher)
+
+    key = analyze_cipher(test_cipher, best_guess)
+    print('Der Schlüssel: ' + key)
+
+    decrypted_text = decrypt_vigenere_chiffre(test_cipher, key)
+
+    print(decrypted_text)
