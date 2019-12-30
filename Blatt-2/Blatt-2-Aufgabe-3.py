@@ -1,4 +1,3 @@
-
 import hashlib
 import itertools
 import time
@@ -9,10 +8,10 @@ from multiprocessing import Process, current_process
 def create_ingredients():
     password_ingredients = ''
 
-    for i in range(ord('a'), ord('z')+1):
+    for i in range(ord('a'), ord('z') + 1):
         password_ingredients += chr(i)
 
-    for j in range(ord('A'), ord('Z')+1):
+    for j in range(ord('A'), ord('Z') + 1):
         password_ingredients += chr(j)
 
     for x in range(10):
@@ -21,11 +20,12 @@ def create_ingredients():
     return password_ingredients
 
 
-def create_password(input_value, ingredients, password_length, combinations_number, current_hash, user_input, process_count, start_time):
+def create_password(input_value, ingredients, password_length, combinations_number, current_hash, user_input,
+                    process_count, start_time):
     print(f"Process ID: {current_process().name}")
     for item in itertools.islice(itertools.product(ingredients, repeat=password_length),
-                                                    int(combinations_number * input_value/process_count),
-                                                    int(combinations_number * (input_value+1)/process_count)):
+                                 int(combinations_number * input_value / process_count),
+                                 int(combinations_number * (input_value + 1) / process_count)):
 
         if hashlib.sha1(''.join(item).encode()).hexdigest() == current_hash:
             print(time.time() - start_time)
@@ -33,7 +33,6 @@ def create_password(input_value, ingredients, password_length, combinations_numb
 
 
 def hash_generated_passwords_joe(input_array):
-
     for counter, item in enumerate(input_array):
         if hashlib.sha1(item.encode()).hexdigest() == current_hash:
             print('Password for ' + current_user + ': ' + ''.join(item))
@@ -65,7 +64,7 @@ if __name__ == '__main__':
 
     if current_user != 'joe':
         processes = []
-        process_count = 8
+        process_count = 24
         ingredients = create_ingredients()
         combinations_number = 62 ** password_length
 
@@ -86,7 +85,7 @@ if __name__ == '__main__':
 
         elapsed_time = time.time() - start_time
         print('Gebrauchte Zeit für einen kompletten Durchlauf: ' + str(elapsed_time))
-        print('Verglichene Keys auf allen Prozessen: ' + str(combinations_number/elapsed_time))
+        print('Verglichene Keys auf allen Prozessen: ' + str(combinations_number / elapsed_time))
 
     else:
         combinations_number = 100
