@@ -158,7 +158,7 @@ if __name__ == '__main__':
 
     print(decrypted_text)
 
-    test_cipher = encrypt_vigenere_chiffre('igloskbso', decrypted_text)
+    test_cipher = encrypt_vigenere_chiffre('igloskbsodrupist', decrypted_text)
 
     best_guess = 0
 
