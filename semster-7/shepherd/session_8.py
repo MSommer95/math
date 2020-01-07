@@ -44,3 +44,10 @@ if __name__ == '__main__':
         'aGuest', 'manager', 'sean', 'root', 'administrator', 'privileged', 'seanduggan', 'markdenihan', 'mark',
         'superuser', 'megauser', 'hyperuser', 'godzilla', 'kinguser', 'rootuser', 'adminuser'  'shepherd']
     insert_cookie(acc_list)
+
+
+    acc_list = [
+        'zoidberg23@shepherd.com', 'zoidberg24@shepherd.com', 'elitehacker@shepherd.com', 'buzzthebald@shepherd.com',
+        'spoiltbrat@security.com', 'superman4@security.com', 'superman3@security.com', 'superman2@security.com',
+        'superman@security.com', 'superman6@security.com', 'superman7@security.com', 'superman8@security.com',
+    ]
